@@ -10,11 +10,9 @@ import {
   TitleLogin
 } from "../styles/loginScreen.styles";
 import { useRequests } from "../../../shared/hooks/useRequests";
-import { useGlobalContext } from "../../../shared/hooks/useGlobalContext";
 import { UserType } from "../types/UserType";
 
 const LoginScreen = () => {  
-  const { accessToken, setAccessToken } = useGlobalContext()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { postRequest, loading } = useRequests();
@@ -26,12 +24,11 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    const user = await postRequest<UserType>('http://localhost:3000/auth', {
+  const handleLogin = () => {
+    postRequest<UserType>('http://localhost:3000/auth', {
       email: email,
       password: password,
     });
-    setAccessToken(user?.accessToken || '');
   };
 
   return (
@@ -39,7 +36,7 @@ const LoginScreen = () => {
       <ContainerLogin>
         <LimitedContainer>
           <SVGLogo />
-          <TitleLogin level={2} type="secondary" >LOGIN ({accessToken})</TitleLogin>
+          <TitleLogin level={2} type="secondary" >LOGIN</TitleLogin>
           <Input title="USUÁRIO" margin="32px 0px 0px" onChange={handleEmail} value={email} />
           <Input type="password" title="SENHA" margin="32px 0px 0px" onChange={handlePassword} value={password}/>
           <Button loading={loading} type="primary" margin="34px 0px 16px 0px" onClick={handleLogin}>ENTRAR</Button>
