@@ -1,8 +1,15 @@
 import { useState } from "react";
 import Button from "../../../shared/buttons/button/Button";
 import Input from "../../../shared/inputs/input/Input";
-import { BackgroundImage, ContainerLogin, ContainerLoginScreen, LimitedContainer, LogoImage, TitleLogin } from "../styles/loginScreen.styles";
 import axios from "axios";
+import SVGLogo from "../../../shared/icons/SVGLogo";
+import {
+  BackgroundImage,
+  ContainerLogin,
+  ContainerLoginScreen,
+  LimitedContainer,
+  TitleLogin
+} from "../styles/loginScreen.styles";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +43,7 @@ const LoginScreen = () => {
     <ContainerLoginScreen>
       <ContainerLogin>
         <LimitedContainer>
-          <LogoImage src="./logo.png" />
+          <SVGLogo />
           <TitleLogin level={2} type="secondary" >LOGIN</TitleLogin>
           <Input title="USUÁRIO" margin="32px 0px 0px" onChange={handleEmail} value={email} />
           <Input type="password" title="SENHA" margin="32px 0px 0px" onChange={handlePassword} value={password}/>
