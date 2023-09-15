@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Button from "../../../shared/buttons/button/Button";
-import Input from "../../../shared/inputs/input/Input";
-import axios from "axios";
-import SVGLogo from "../../../shared/icons/SVGLogo";
+import Button from "../../../shared/components/buttons/button/Button";
+import Input from "../../../shared/components/inputs/input/Input";
+import SVGLogo from "../../../shared/components/icons/SVGLogo";
 import {
   BackgroundImage,
   ContainerLogin,
@@ -10,10 +9,12 @@ import {
   LimitedContainer,
   TitleLogin
 } from "../styles/loginScreen.styles";
+import { useRequests } from "../../../shared/hooks/useRequests";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { postRequest, loading } = useRequests();
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -23,23 +24,13 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:3000/auth',
-      data: {
-        email: email,
-        password: password,
-      },
-    }).then((result) => {
-      alert(`Fez login ${result.data.accessToken}`);
-      return result.data;
-    }).catch(() => {
-      alert('Usuário ou senha inválido.');
+    postRequest('http://localhost:3000/auth', {
+      email: email,
+      password: password,
     });
-    alert(`email: ${email}, password: ${password}`);
   };
 
-  return (<div>
+  return (
     <ContainerLoginScreen>
       <ContainerLogin>
         <LimitedContainer>
@@ -47,12 +38,12 @@ const LoginScreen = () => {
           <TitleLogin level={2} type="secondary" >LOGIN</TitleLogin>
           <Input title="USUÁRIO" margin="32px 0px 0px" onChange={handleEmail} value={email} />
           <Input type="password" title="SENHA" margin="32px 0px 0px" onChange={handlePassword} value={password}/>
-          <Button type="primary" margin="34px 0px 16px 0px" onClick={handleLogin}>ENTRAR</Button>
+          <Button loading={loading} type="primary" margin="34px 0px 16px 0px" onClick={handleLogin}>ENTRAR</Button>
         </LimitedContainer>
       </ContainerLogin>
       <BackgroundImage src="./background.png"/>
     </ContainerLoginScreen>
-  </div>)
+  )
 };
 
 export default LoginScreen;
