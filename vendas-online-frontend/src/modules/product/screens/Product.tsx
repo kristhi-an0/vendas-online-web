@@ -1,4 +1,8 @@
+import { useGlobalContext } from "../../../shared/hooks/useGlobalContext";
+
 const Product = () => {
-  return <div>Produtos</div>
+  const { user } = useGlobalContext();
+  console.log('user', user);
+  return <div>{`Produtos ${user?.cpf}`}</div>;
 }
 export default Product;

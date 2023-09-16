@@ -1,18 +1,18 @@
 import axios from "axios";
-import { useState } from "react"
-import { useGlobalContext } from "./useGlobalContext";
-import { connectionApiPost } from "../functions/connection/connectionAPI";
-import { URL_AUTH } from "../constants/urls";
-import { ERROR_INVALID_PASSWORD } from "../constants/errosStatus";
 import { useNavigate } from "react-router-dom";
-import { ProductRoutesEnum } from "../../modules/product/routes";
-import { setAuthorizationToken } from "../functions/connection/auth";
+import { useState } from "react"
 import { AuthType } from "../../modules/login/types/AuthType";
+import { ProductRoutesEnum } from "../../modules/product/routes";
+import { ERROR_INVALID_PASSWORD } from "../constants/errosStatus";
+import { URL_AUTH } from "../constants/urls";
+import { setAuthorizationToken } from "../functions/connection/auth";
+import { connectionApiPost } from "../functions/connection/connectionAPI";
+import { useGlobalContext } from "./useGlobalContext";
 
 export const useRequests = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setNotification } = useGlobalContext();
+  const { setNotification, setUser } = useGlobalContext();
 
   const getRequest = async (url: string) => {
     setLoading(true);
@@ -47,8 +47,9 @@ export const useRequests = () => {
     setLoading(true);
     await connectionApiPost<AuthType>(URL_AUTH, body)
       .then((result) => {
-        navigate(ProductRoutesEnum.PRODUCT);
+        setUser(result.user);
         setAuthorizationToken(result.accessToken);
+        navigate(ProductRoutesEnum.PRODUCT);
         return result;
       })
       .catch(() => {
