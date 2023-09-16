@@ -10,12 +10,11 @@ import {
   TitleLogin
 } from "../styles/loginScreen.styles";
 import { useRequests } from "../../../shared/hooks/useRequests";
-import { UserType } from "../types/UserType";
 
 const LoginScreen = () => {  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { postRequest, loading } = useRequests();
+  const { authRequest, loading } = useRequests();
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -25,7 +24,7 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
-    postRequest<UserType>('http://localhost:3000/auth', {
+    authRequest({
       email: email,
       password: password,
     });
